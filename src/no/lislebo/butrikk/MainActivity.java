@@ -2,6 +2,8 @@ package no.lislebo.butrikk;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.content.Intent;
+import android.view.View;
 
 public class MainActivity extends Activity
 {
@@ -11,5 +13,10 @@ public class MainActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+    }
+
+    public void openParticipantList(View view) {
+        Intent intent = new Intent(this, ParticipantList.class);
+        startActivity(intent);
     }
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="app_name">Trikketur</string>
+  <string name="list_btn">Deltakere</string>
   <drawable name="white">#ffffff</drawable>
   <drawable name="blue">#2554C7</drawable>
   <drawable name="green">#347C2C</drawable>
