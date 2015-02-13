@@ -8,14 +8,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
+import android.widget.Toast;
 
 public class ParticipantList extends ExpandableListActivity {
 
-    @SuppressWarnings("unchecked")
     public void onCreate(Bundle savedInstanceState) {
         try{
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.participant_list);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.participant_list);
 
             SimpleExpandableListAdapter expListAdapter =
                 new SimpleExpandableListAdapter(
@@ -37,7 +37,6 @@ public class ParticipantList extends ExpandableListActivity {
     }
 
     /* Creating the Hashmap for the row */
-    @SuppressWarnings("unchecked")
     private List createGroupList() {
         ArrayList result = new ArrayList();
         for( int i = 0 ; i < 15 ; ++i ) { // 15 groups........
@@ -49,7 +48,6 @@ public class ParticipantList extends ExpandableListActivity {
     }
 
     /* creatin the HashMap for the children */
-    @SuppressWarnings("unchecked")
     private List createChildList() {
 
         ArrayList result = new ArrayList();
