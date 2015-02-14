@@ -56,15 +56,16 @@ public class ParticipantList extends ExpandableListActivity {
                 line = reader.readLine();
                 String[] participant = line.split(",");
                 HashMap m = new HashMap();
-                Toast.makeText(this, participant[0], Toast.LENGTH_SHORT).show();
                 m.put("participant", participant[0]);
                 n_participants++;
+                result.add(m);
             }
             reader.close();
         } catch (IOException e) {
             Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+        } finally {
+            return (List)result;
         }
-        return (List)result;
     }
 
     private List createChildList() {
@@ -73,7 +74,7 @@ public class ParticipantList extends ExpandableListActivity {
             ArrayList secList = new ArrayList();
             for( int n = 0 ; n < 3 ; n++ ) {
                 HashMap child = new HashMap();
-                child.put( "Sub Item", "Flesk " + n );
+                child.put( "drink", "Flesk ");
                 secList.add( child );
             }
             result.add( secList );
