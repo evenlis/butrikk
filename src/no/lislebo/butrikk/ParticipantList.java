@@ -3,6 +3,10 @@ package no.lislebo.butrikk;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.io.File;
+import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import android.app.ExpandableListActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +16,8 @@ import android.widget.Toast;
 
 public class ParticipantList extends ExpandableListActivity {
 
+    private int n_participants;
+
     public void onCreate(Bundle savedInstanceState) {
         try{
         super.onCreate(savedInstanceState);
@@ -20,43 +26,52 @@ public class ParticipantList extends ExpandableListActivity {
             SimpleExpandableListAdapter expListAdapter =
                 new SimpleExpandableListAdapter(
                                                 this,
-                                                createGroupList(),              // Creating group List.
-                                                R.layout.group_row,             // Group item layout XML.
-                                                new String[] { "Group Item" },  // the key of group item.
-                                                new int[] { R.id.row_name },    // ID of each group item.-Data under the key goes into this TextView.
-                                                createChildList(),              // childData describes second-level entries.
-                                                R.layout.child_row,             // Layout for sub-level entries(second level).
-                                                new String[] {"Sub Item"},      // Keys in childData maps to display.
-                                                new int[] { R.id.grp_child}     // Data under the keys above go into these TextViews.
+                                                createGroupList(),
+                                                R.layout.group_row,
+                                                new String[] { "participant" },
+                                                new int[] { R.id.row_name },
+                                                createChildList(),
+                                                R.layout.child_row,
+                                                new String[] {"drink"},
+                                                new int[] { R.id.grp_child}
                                                 );
-            setListAdapter( expListAdapter );       // setting the adapter in the list.
+            setListAdapter( expListAdapter );
 
         }catch(Exception e){
             System.out.println("Errrr +++ " + e.getMessage());
         }
     }
 
-    /* Creating the Hashmap for the row */
     private List createGroupList() {
         ArrayList result = new ArrayList();
-        for( int i = 0 ; i < 15 ; ++i ) { // 15 groups........
-            HashMap m = new HashMap();
-            m.put( "Group Item","Group Item " + i ); // the key and it's value.
-            result.add( m );
+        try {
+            Toast.makeText(this, "1", Toast.LENGTH_SHORT).show();
+            BufferedReader reader = new BufferedReader( new FileReader( new File("deltakere.csv") ) );
+            Toast.makeText(this, "2", Toast.LENGTH_SHORT).show();
+            n_participants = 0;
+            String line = "";
+            while (!line.equals("-1")) {
+                line = reader.readLine();
+                String[] participant = line.split(",");
+                HashMap m = new HashMap();
+                Toast.makeText(this, participant[0], Toast.LENGTH_SHORT).show();
+                m.put("participant", participant[0]);
+                n_participants++;
+            }
+            reader.close();
+        } catch (IOException e) {
+
         }
         return (List)result;
     }
 
-    /* creatin the HashMap for the children */
     private List createChildList() {
-
         ArrayList result = new ArrayList();
-        for( int i = 0 ; i < 15 ; ++i ) { // this -15 is the number of groups(Here it's fifteen)
-            /* each group need each HashMap-Here for each group we have 3 subgroups */
+        for( int i = 0 ; i < n_participants ; ++i ) {
             ArrayList secList = new ArrayList();
             for( int n = 0 ; n < 3 ; n++ ) {
                 HashMap child = new HashMap();
-                child.put( "Sub Item", "Sub Item " + n );
+                child.put( "Sub Item", "Flesk " + n );
                 secList.add( child );
             }
             result.add( secList );
