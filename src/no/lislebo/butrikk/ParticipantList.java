@@ -21,16 +21,18 @@ public class ParticipantList extends ExpandableListActivity {
     private int n_participants;
     private final String filename = "deltakere.csv";
     private final String path = "/storage/sdcard1/Documents";
+    private HashMap<String,int[]> drinkMap = new HashMap<String,int[]>();
+    private List groupList;
 
     public void onCreate(Bundle savedInstanceState) {
         try{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.participant_list);
-
+        groupList = createGroupList();
             SimpleExpandableListAdapter expListAdapter =
                 new SimpleExpandableListAdapter(
                                                 this,
-                                                createGroupList(),
+                                                groupList,
                                                 R.layout.group_row,
                                                 new String[] { "participant" },
                                                 new int[] { R.id.row_name },
@@ -54,9 +56,11 @@ public class ParticipantList extends ExpandableListActivity {
             String line = "";
             while (!line.equals("-1")) {
                 line = reader.readLine();
-                String[] participant = line.split(",");
+                String[] p = line.split(",");
                 HashMap m = new HashMap();
-                m.put("participant", participant[0]);
+                m.put("participant", p[0]);
+                int[] p_drinks = {Integer.parseInt(p[1]),Integer.parseInt(p[2]),Integer.parseInt(p[3]),Integer.parseInt(p[4]),Integer.parseInt(p[5])};
+                drinkMap.put(p[0], p_drinks);
                 n_participants++;
                 result.add(m);
             }
@@ -72,9 +76,12 @@ public class ParticipantList extends ExpandableListActivity {
         ArrayList result = new ArrayList();
         for( int i = 0 ; i < n_participants ; ++i ) {
             ArrayList secList = new ArrayList();
-            for( int n = 0 ; n < 3 ; n++ ) {
+            HashMap p = (HashMap)groupList.get(i);
+            int[] drink = drinkMap.get(p.get("participant").toString());
+            Toast.makeText(getApplicationContext(), p.get("participant").toString(), Toast.LENGTH_SHORT).show();
+            for( int n = 0 ; n < 5 ; n++ ) {
                 HashMap child = new HashMap();
-                child.put( "drink", "Flesk ");
+                child.put( "drink", "Øl ");
                 secList.add( child );
             }
             result.add( secList );
