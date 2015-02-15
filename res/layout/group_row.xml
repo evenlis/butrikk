@@ -11,6 +11,6 @@
             android:textColor="@drawable/green"
             android:textStyle="bold"
             android:layout_width="wrap_content"
-            android:layout_height="45dip"/>
+            android:layout_height="wrap_content"/>
 
 </LinearLayout>
