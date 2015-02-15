@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.Toast;
+import android.widget.Button;
 
 public class ParticipantList extends ExpandableListActivity {
 
@@ -39,8 +40,8 @@ public class ParticipantList extends ExpandableListActivity {
                                                 new int[] { R.id.row_name },
                                                 createChildList(),
                                                 R.layout.child_row,
-                                                new String[] {"drink"},
-                                                new int[] { R.id.grp_child}
+                                                new String[] {"drink", "sub_drink", "add_drink"},
+                                                new int[] { R.id.grp_child, R.id.sub_dr_btn, R.id.add_dr_btn}
                                                 );
             setListAdapter( expListAdapter );
 
@@ -85,6 +86,8 @@ public class ParticipantList extends ExpandableListActivity {
                 HashMap child = new HashMap();
                 if (paidDrinks[j] > 0) {
                     child.put("drink", drinkNames[j] + ": " + paidDrinks[j]);
+                    child.put("add_drink", "+");
+                    child.put("sub_drink", "-");
                     secList.add( child );
                 }
             }
@@ -108,6 +111,16 @@ public class ParticipantList extends ExpandableListActivity {
         }catch(Exception e){
             System.out.println(" groupPosition Errrr +++ " + e.getMessage());
         }
+    }
+
+    public void addDrink(View view) {
+        Button b = (Button)view;
+        Toast.makeText(this, b.getText().toString(), Toast.LENGTH_SHORT).show();
+    }
+
+    public void subtractDrink(View view) {
+        Button b = (Button)view;
+        Toast.makeText(this, b.getText().toString(), Toast.LENGTH_SHORT).show();
     }
 
 }

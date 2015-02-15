@@ -3,6 +3,8 @@
   <string name="app_name">Trikketur</string>
   <string name="search_hint">Søk etter deltaker...</string>
   <string name="list_btn">Deltakere</string>
+  <string name="add_drink_btn">+</string>
+  <string name="subtract_drink_btn">-</string>
   <drawable name="white">#ffffff</drawable>
   <drawable name="blue">#2554C7</drawable>
   <drawable name="green">#347C2C</drawable>
