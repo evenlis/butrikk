@@ -13,10 +13,13 @@ import android.app.ExpandableListActivity;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.Toast;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class ParticipantList extends ExpandableListActivity {
 
@@ -40,8 +43,8 @@ public class ParticipantList extends ExpandableListActivity {
                                                 new int[] { R.id.row_name },
                                                 createChildList(),
                                                 R.layout.child_row,
-                                                new String[] {"drink", "sub_drink", "add_drink"},
-                                                new int[] { R.id.grp_child, R.id.sub_dr_btn, R.id.add_dr_btn}
+                                                new String[] {"drink", "additional_drinks", "sub_drink", "add_drink"},
+                                                new int[] { R.id.grp_child, R.id.additional_drinks, R.id.sub_dr_btn, R.id.add_dr_btn}
                                                 );
             setListAdapter( expListAdapter );
 
@@ -86,6 +89,7 @@ public class ParticipantList extends ExpandableListActivity {
                 HashMap child = new HashMap();
                 if (paidDrinks[j] > 0) {
                     child.put("drink", drinkNames[j] + ": " + paidDrinks[j]);
+                    child.put("additional_drinks", "");
                     child.put("add_drink", "+");
                     child.put("sub_drink", "-");
                     secList.add( child );
@@ -115,11 +119,36 @@ public class ParticipantList extends ExpandableListActivity {
 
     public void addDrink(View view) {
         Button b = (Button)view;
-        Toast.makeText(this, b.getText().toString(), Toast.LENGTH_SHORT).show();
+        ViewGroup row = (ViewGroup)view.getParent();
+        for (int i=0; i<row.getChildCount(); i++) {
+            View v = row.getChildAt(i);
+            if (v instanceof TextView && v.getId() == 2131034113) {
+                TextView tv = (TextView)v;
+                String text = ""+tv.getText();
+                if ("".equals(text)) {
+                    tv.setText("+1");
+                } else {
+                    tv.setText( "+" + ( Integer.parseInt(text.substring(1)) + 1 ) );
+                }
+            }
+        }
     }
 
     public void subtractDrink(View view) {
         Button b = (Button)view;
+        ViewGroup row = (ViewGroup)view.getParent();
+        for (int i=0; i<row.getChildCount(); i++) {
+            View v = row.getChildAt(i);
+            if (v instanceof TextView && v.getId() == 2131034113) {
+                TextView tv = (TextView)v;
+                String text = ""+tv.getText();
+                if ("+1".equals(text)) {
+                    tv.setText("");
+                } else if (!"".equals(text)){
+                    tv.setText( "+" + ( Integer.parseInt(text.substring(1)) - 1 ) );
+                }
+            }
+        }
         Toast.makeText(this, b.getText().toString(), Toast.LENGTH_SHORT).show();
     }
 
