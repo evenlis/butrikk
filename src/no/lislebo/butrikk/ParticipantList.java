@@ -74,15 +74,17 @@ public class ParticipantList extends ExpandableListActivity {
 
     private List createChildList() {
         ArrayList result = new ArrayList();
+        String[] drinkNames = {"Pils", "Alkoholfri øl", "Vin", "Alkoholfri vin", "Mineralvann"};
         for( int i = 0 ; i < n_participants ; ++i ) {
             ArrayList secList = new ArrayList();
             HashMap p = (HashMap)groupList.get(i);
-            int[] drink = drinkMap.get(p.get("participant").toString());
-            Toast.makeText(getApplicationContext(), p.get("participant").toString(), Toast.LENGTH_SHORT).show();
-            for( int n = 0 ; n < 5 ; n++ ) {
+            int[] paidDrinks = drinkMap.get(p.get("participant").toString());
+            for( int j = 0; j < 5; j++ ) {
                 HashMap child = new HashMap();
-                child.put( "drink", "Øl ");
-                secList.add( child );
+                if (paidDrinks[j] > 0) {
+                    child.put("drink", drinkNames[j] + ": " + paidDrinks[j]);
+                    secList.add( child );
+                }
             }
             result.add( secList );
         }
