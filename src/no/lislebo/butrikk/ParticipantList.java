@@ -3,7 +3,8 @@ package no.lislebo.butrikk;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.io.File;
 import java.io.IOException;
 import java.io.BufferedReader;
@@ -68,6 +69,7 @@ public class ParticipantList extends ExpandableListActivity {
         } catch (IOException e) {
             Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
         } finally {
+            Collections.sort((List)result, new CustomComparator());
             return (List)result;
         }
     }
@@ -106,5 +108,13 @@ public class ParticipantList extends ExpandableListActivity {
         }catch(Exception e){
             System.out.println(" groupPosition Errrr +++ " + e.getMessage());
         }
+    }
+
+}
+
+class CustomComparator implements Comparator<HashMap> {
+    @Override
+    public int compare(HashMap m1, HashMap m2) {
+        return m1.get("participant").toString().compareToIgnoreCase(m2.get("participant").toString());
     }
 }
