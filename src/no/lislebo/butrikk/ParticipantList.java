@@ -28,13 +28,14 @@ public class ParticipantList extends ExpandableListActivity {
     private final String path = "/storage/sdcard1/Documents";
     private HashMap<String,int[]> drinkMap = new HashMap<String,int[]>();
     private List groupList;
+    private SimpleExpandableListAdapter expListAdapter;
 
     public void onCreate(Bundle savedInstanceState) {
         try{
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.participant_list);
-        groupList = createGroupList();
-            SimpleExpandableListAdapter expListAdapter =
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.participant_list);
+            groupList = createGroupList();
+            expListAdapter =
                 new SimpleExpandableListAdapter(
                                                 this,
                                                 groupList,
@@ -49,6 +50,7 @@ public class ParticipantList extends ExpandableListActivity {
             setListAdapter( expListAdapter );
 
         }catch(Exception e){
+
             System.out.println("Errrr +++ " + e.getMessage());
         }
     }
@@ -64,7 +66,7 @@ public class ParticipantList extends ExpandableListActivity {
                 String[] p = line.split(",");
                 HashMap m = new HashMap();
                 m.put("participant", p[0]);
-                int[] p_drinks = {Integer.parseInt(p[1]),Integer.parseInt(p[2]),Integer.parseInt(p[3]),Integer.parseInt(p[4]),Integer.parseInt(p[5])};
+                int[] p_drinks = {Integer.parseInt(p[1]),Integer.parseInt(p[2]),Integer.parseInt(p[3]),Integer.parseInt(p[4]),Integer.parseInt(p[5]), Integer.parseInt(p[6])};
                 drinkMap.put(p[0], p_drinks);
                 n_participants++;
                 result.add(m);
@@ -100,21 +102,7 @@ public class ParticipantList extends ExpandableListActivity {
         return result;
     }
     public void  onContentChanged  () {
-        System.out.println("onContentChanged");
         super.onContentChanged();
-    }
-
-    public boolean onChildClick( ExpandableListView parent, View v, int groupPosition,int childPosition,long id) {
-        System.out.println("Inside onChildClick at groupPosition = " + groupPosition +" Child clicked at position " + childPosition);
-        return true;
-    }
-
-    public void  onGroupExpand  (int groupPosition) {
-        try{
-            System.out.println("Group exapanding Listener => groupPosition = " + groupPosition);
-        }catch(Exception e){
-            System.out.println(" groupPosition Errrr +++ " + e.getMessage());
-        }
     }
 
     public void addDrink(View view) {
@@ -149,7 +137,6 @@ public class ParticipantList extends ExpandableListActivity {
                 }
             }
         }
-        Toast.makeText(this, b.getText().toString(), Toast.LENGTH_SHORT).show();
     }
 
 }
