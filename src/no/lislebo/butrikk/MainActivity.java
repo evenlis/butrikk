@@ -79,8 +79,9 @@ public class MainActivity extends Activity {
                 String contents = intent.getStringExtra("SCAN_RESULT");
                 if (participantList.contains(contents)) {
                     int position = participantList.indexOf(contents);
-                    listView.smoothScrollToPosition(position);
+                    View view = listView.getChildAt(position);
                     listView.setSelection(position);
+                    listView.requestFocusFromTouch();
                 } else {
                     Toast.makeText(this, "Fant ikke deltaker", Toast.LENGTH_SHORT).show();
                 }
@@ -112,11 +113,6 @@ public class MainActivity extends Activity {
         public int indexOf(Object o) {
             int index = 0;
             if (o == null) {
-                for (String s : this) {
-                    if (s == null)
-                        return index;
-                    index++;
-                }
                 return -1;
             } else {
                 String comp = (String)o;

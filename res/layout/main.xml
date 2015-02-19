@@ -23,6 +23,8 @@
       android:paddingTop="0dp"
       android:paddingBottom="0dp"
       android:paddingLeft="15dp"
-      android:paddingRight="22dp"/>
+      android:paddingRight="22dp"
+      android:choiceMode="singleChoice"
+      android:listSelector="@android:color/darker_gray"/>
 
 </LinearLayout>
