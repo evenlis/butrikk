@@ -2,9 +2,19 @@ package no.lislebo.butrikk;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Collections;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.FileNotFoundException;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Toast;
@@ -16,10 +26,12 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class MainActivity extends Activity {
 
-    private final String filename = "deltakere.csv";
-    private final String path = "/storage/sdcard1/Documents";
+    private final String FILENAME = "deltakere.csv";
+    private final String PATH = "/storage/sdcard1/Documents/";
+    private final String TAG = "TRIKK";
     private ListView listView;
     private List<String> participantList;
+    private Map<String,Integer> voucherMap;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -27,16 +39,28 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         participantList = new ArrayList<String>();
+        voucherMap = new HashMap<String,Integer>();
         listView = (ListView)findViewById(R.id.listview);
         createListView();
     }
 
     private void createListView() {
-        participantList.add("Holmestrand fjordhotell");
-        participantList.add("Bǽdelænd");
-        participantList.add("Tyholt Apenes");
-        participantList.add("Kvinneforbud");
-        participantList.add("Skummamelk");
+        try {
+            BufferedReader reader = new BufferedReader( new FileReader( new File(PATH + FILENAME) ) );
+            Log.d(TAG, "Successfully opened participants file");
+            while (reader.ready()) {
+                String[] participant = reader.readLine().split(",");
+                String name = participant[0];
+                int vouchers = Integer.parseInt(participant[1]);
+                voucherMap.put(name.toLowerCase(), vouchers);
+                participantList.add(name + " - " + vouchers);
+            }
+        } catch (FileNotFoundException e) {
+            Log.e(TAG, e.toString());
+        } catch (IOException e) {
+            Log.e(TAG, e.toString());
+        }
+        Collections.sort(participantList);
         listView.setAdapter(new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1,participantList));
         listView.setOnItemClickListener(new OnItemClickListener() {
                 @Override
@@ -44,7 +68,6 @@ public class MainActivity extends Activity {
                     //args2 is the listViews Selected index
                 }
             });
-
     }
 
     public void scanQrCode(View view) {
@@ -57,8 +80,11 @@ public class MainActivity extends Activity {
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
                 String contents = intent.getStringExtra("SCAN_RESULT");
-                String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
-                Toast.makeText(this, contents, Toast.LENGTH_SHORT).show();
+                if (voucherMap.containsKey(contents.toLowerCase())) {
+                    Toast.makeText(this, "Participant found: " + contents, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Fant ikke deltaker", Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }
