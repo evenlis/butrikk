@@ -5,6 +5,12 @@
               android:layout_height="fill_parent"
               >
 
+  <Button
+      android:layout_height="wrap_content"
+      android:layout_width="wrap_content"
+      android:text="@string/qr_btn"
+      android:onClick="scanQrCode" />
+
   <ExpandableListView android:id="@+id/android:list"
                       android:layout_width="fill_parent"
                       android:layout_height="match_parent"
