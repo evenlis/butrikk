@@ -79,6 +79,7 @@ public class MainActivity extends Activity {
                 String contents = intent.getStringExtra("SCAN_RESULT");
                 if (participantList.contains(contents)) {
                     listView.smoothScrollToPosition(13);
+                    Toast.makeText(this, "Position in list: " + participantList.indexOf(contents), Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(this, "Fant ikke deltaker", Toast.LENGTH_SHORT).show();
                 }
@@ -90,13 +91,41 @@ public class MainActivity extends Activity {
 
         @Override
         public boolean contains(Object o) {
-            String comp = (String)o;
+            if (o == null)
+                return false;
+
+            String comp;
+            if (o instanceof String)
+                comp = (String)o;
+            else
+                return false;
+
             for (String s : this) {
-                if (s.split(" - ")[0].equalsIgnoreCase(comp)) {
+                if (s.split(" - ")[0].equalsIgnoreCase(comp))
                     return true;
-                }
             }
             return false;
+        }
+
+        @Override
+        public int indexOf(Object o) {
+            int index = 0;
+            if (o == null) {
+                for (String s : this) {
+                    if (s == null)
+                        return index;
+                    index++;
+                }
+                return -1;
+            } else {
+                String comp = (String)o;
+                for (String s : this) {
+                    if ( s.split(" - ")[0].equalsIgnoreCase(comp) )
+                        return index;
+                    index++;
+                }
+                return -1;
+            }
         }
     }
 
