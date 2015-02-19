@@ -78,8 +78,9 @@ public class MainActivity extends Activity {
             if (resultCode == RESULT_OK) {
                 String contents = intent.getStringExtra("SCAN_RESULT");
                 if (participantList.contains(contents)) {
-                    listView.smoothScrollToPosition(13);
-                    Toast.makeText(this, "Position in list: " + participantList.indexOf(contents), Toast.LENGTH_SHORT).show();
+                    int position = participantList.indexOf(contents);
+                    listView.smoothScrollToPosition(position);
+                    listView.setSelection(position);
                 } else {
                     Toast.makeText(this, "Fant ikke deltaker", Toast.LENGTH_SHORT).show();
                 }
