@@ -30,16 +30,14 @@ public class MainActivity extends Activity {
     private final String PATH = "/storage/sdcard1/Documents/";
     private final String TAG = "TRIKK";
     private ListView listView;
-    private List<String> participantList;
-    private Map<String,Integer> voucherMap;
+    private CustomList participantList;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        participantList = new ArrayList<String>();
-        voucherMap = new HashMap<String,Integer>();
+        participantList = new CustomList();
         listView = (ListView)findViewById(R.id.listview);
         createListView();
     }
@@ -52,7 +50,6 @@ public class MainActivity extends Activity {
                 String[] participant = reader.readLine().split(",");
                 String name = participant[0];
                 int vouchers = Integer.parseInt(participant[1]);
-                voucherMap.put(name.toLowerCase(), vouchers);
                 participantList.add(name + " - " + vouchers);
             }
         } catch (FileNotFoundException e) {
@@ -80,12 +77,26 @@ public class MainActivity extends Activity {
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
                 String contents = intent.getStringExtra("SCAN_RESULT");
-                if (voucherMap.containsKey(contents.toLowerCase())) {
-                    Toast.makeText(this, "Participant found: " + contents, Toast.LENGTH_SHORT).show();
+                if (participantList.contains(contents)) {
+                    listView.smoothScrollToPosition(13);
                 } else {
                     Toast.makeText(this, "Fant ikke deltaker", Toast.LENGTH_SHORT).show();
                 }
             }
+        }
+    }
+
+    private class CustomList extends ArrayList<String> {
+
+        @Override
+        public boolean contains(Object o) {
+            String comp = (String)o;
+            for (String s : this) {
+                if (s.split(" - ")[0].equalsIgnoreCase(comp)) {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 
